@@ -2,7 +2,7 @@
 
 Code for *Model-Based Galerkin Lifting with Exact LTI Decomposition for Guaranteed H-infinity Output Feedback Control of Nonlinear Systems*, by Burak Kürkçü, Christopher Phan, Aleksandar Zecevic, and Maryam Khanbaghi.
 
-The paper uses MATLAB/Simulink for the controller comparison. An alternative Python implementation reproduces the comparison and Fig. 5 without a MATLAB or Simulink license. Python also provides the Galerkin design, regional certificates, and Figs. 1–4. Localization uses a cubic lifted auxiliary realization with the same controller.
+The paper uses Python for the controller comparison. An alternative MATLAB/Simulink implementation reproduces the comparison and Fig. 5. Python also provides the Galerkin design, regional certificates, and Figs. 1–4. Localization uses a cubic lifted auxiliary realization with the same controller.
 
 ## Python
 
