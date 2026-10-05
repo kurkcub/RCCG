@@ -44,7 +44,7 @@ The model uses `ode23tb` with relative tolerance `1e-9`, absolute tolerance `1e-
 
 ## Python–Simulink agreement
 
-The alternative Python comparison uses RK4 with a `1e-5` s step and exact propagation of the reference derivative filters. Both implementations use the same physical models, controller matrices, reference, zero initial states, and 500 rad/s backstepping filter.
+The Python comparison uses RK4 with a `1e-5` s step and exact propagation of the reference derivative filters. Both implementations use the same physical models, controller matrices, reference, zero initial states, and 500 rad/s backstepping filter.
 
 Over 175 s, on the common 0.001 s output grid, the largest angle difference across the six nominal/P1/P2 trajectories is `4.66e-8` rad. The nominal backstepping time-weighted RMSE is `3.062538e-5` rad in Simulink and `3.062783e-5` rad in Python, a difference of `2.45e-9` rad (about 0.008%). RMSE and maximum absolute errors agree at the precision reported in the paper. The manuscript reports the Simulink results, while Python also exports Fig. 5 from its own simulated trajectories.
 
