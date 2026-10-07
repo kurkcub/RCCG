@@ -1,4 +1,4 @@
-"""Six nonlinear tracking comparisons without MATLAB.
+"""Six nonlinear tracking comparisons.
 
 Running this file generates the comparison data and Figure 5.
 run() returns the data for the full study.
@@ -15,7 +15,6 @@ import time
 
 import numpy as np
 from numba import njit
-from scipy.io import loadmat
 
 BS_FILTER_W = 500.0
 OUTPUT_STEP = 0.001
@@ -25,7 +24,7 @@ CASE_NAMES = ('Hinf_nominal', 'Hinf_P1', 'Hinf_P2',
 
 
 def physical_coefficients():
-    """Same point-mass and uniform-rod parameters as init_comparison.m."""
+    """Nominal and perturbed point-mass and uniform-rod parameters."""
     parameters = ((1.1, .9, 1., 1.), (1.1, 1.8, 1., 1.),
                   (5.5, .45, 2., 4.))
     coefficients = []
@@ -181,22 +180,16 @@ def _integrate(tk, rk, ak, bk, ck, dk, coefficients, step, output_step, w):
 
 
 def _load_inputs(root):
-    candidates = (root/'comparison_data.mat', root.parent/'matlab'/'comparison_data.mat')
-    reference_path = next((p for p in candidates if p.is_file()), None)
-    if reference_path is None:
-        raise FileNotFoundError('Expected comparison_data.mat here or in the sibling matlab folder.')
-    snapshot = loadmat(reference_path, simplify_cells=True)
-    source = root/'Galerkin_Control.mat'
+    reference_path = root/'paper_data.npz'
+    with np.load(reference_path, allow_pickle=False) as snapshot:
+        reference = np.column_stack((snapshot['reference_t'], snapshot['comparison_reference']))
+        values = [snapshot['controller_'+q] for q in 'ABCD']
+    source = root/'results.npz'
     if source.is_file():
-        loaded = loadmat(source, simplify_cells=True)
-        values = [loaded[q+'K'] for q in 'ABCD']
-    elif (root/'results.npz').is_file():
-        source = root/'results.npz'
         with np.load(source, allow_pickle=False) as loaded:
             values = [loaded['controller_'+q] for q in 'ABCD']
     else:
         source = reference_path
-        values = [snapshot[q] for q in 'ABCD']
     ak, bk, ck, dk = values
     ak = np.asarray(ak, dtype=float)
     bk = np.asarray(bk, dtype=float).reshape(-1)
@@ -206,7 +199,6 @@ def _load_inputs(root):
         raise ValueError('Expected the 14-state SISO controller.')
     if not all(np.all(np.isfinite(x)) for x in (ak, bk, ck, dk)):
         raise ValueError('Controller matrices must be finite.')
-    reference = np.asarray(snapshot['r_test'], dtype=float)
     return reference, (ak, bk, ck, dk), reference_path, source
 
 
@@ -252,7 +244,7 @@ def run(root=None, step=1e-5, stop_time=STOP_TIME):
         step=step, output_step=OUTPUT_STEP, stop_time=stop_time, seconds=elapsed,
         initial_state='zero for all plant/controller/reference-filter states',
         BS_filter_w=BS_FILTER_W, BS_slow_coefficients=[109, 126, 57, 12, 1],
-        controller_source=str(source.relative_to(root)) if source.is_relative_to(root) else '../matlab/comparison_data.mat',
+        controller_source=str(source.relative_to(root)),
         controller_sha256=digest.hexdigest(), reference_sha256=hashlib.sha256(reference.tobytes()).hexdigest(),
         plant_parameters_M_m_L_damping=parameters, plant_coefficients=coefficients.tolist(),
         column_order=list(CASE_NAMES)+['reference'], cases={})

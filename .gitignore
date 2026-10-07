@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 .venv/
 python/figures/
-matlab/figures/
 python/results.json
 python/results.npz
 python/comparison_results.json
@@ -14,7 +13,3 @@ python/degree_results.npz
 python/degree_figure_data.npz
 python/sweep_results.npz
 python/sweep_summary.json
-python/Galerkin_Control.mat
-python/Galerkin_Control.json
-matlab/slprj/
-matlab/*.slxc

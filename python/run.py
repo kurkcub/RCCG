@@ -342,7 +342,7 @@ def main():
     DATA['gamma_performance'] = perf['gamma']
     DATA['P_performance'] = perf['P']
     DATA['epsilon_performance'] = perf['epsilon']
-    # Save the regenerated model for the remaining studies and MATLAB export.
+    # Save the regenerated model for the remaining studies.
     np.savez_compressed(ROOT/'paper_data.npz', **DATA)
     print('6/8  Realization and 10-second residual experiments', flush=True)
     single = realization_test()
@@ -400,8 +400,6 @@ if __name__ == '__main__':
                         '--output', str(ROOT)], check=True, cwd=ROOT)
     from plot_figures import run as draw
     draw(ROOT)
-    from export_matlab import export
-    export(ROOT/'paper_data.npz', ROOT/'Galerkin_Control.mat', controller_path=ROOT/'results.npz')
     from comparison import run as compare_feedback
     from plot_comparison import run as draw_comparison
     if not args.figures_only:
