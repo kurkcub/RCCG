@@ -106,6 +106,45 @@ def realization(data, out):
     save(fig, out / "fig1a_realization.pdf")
 
 
+def sweep_figure(root, out):
+    sw = dict(np.load(root / "sweep_results.npz", allow_pickle=False))
+    gamma = float(json.loads((root / "sweep_summary.json").read_text())["certified_gamma"])
+    fig = plt.figure(figsize=(3.43, 1.68))
+    gain = fig.add_axes([0.13, 0.26, 0.31, 0.59])
+    dissipation = fig.add_axes([0.67, 0.26, 0.31, 0.59])
+    for ax in (gain, dissipation):
+        ax.grid(True, alpha=0.22, linewidth=0.4)
+        ax.set_axisbelow(True)
+        ax.set_xlim(0, 65)
+        ax.set_xticks([0, 30, 65])
+    good = sw["Iw"] > 0
+    gain.plot(sw["t"][good], sw["gain"][good], color=PURPLE, lw=1.05)
+    gain.axhline(gamma, color=ORANGE, ls="--", lw=1.0)
+    gain.annotate(
+        f"{sw['gain'][-1]:.3f}",
+        (sw["t"][-1], sw["gain"][-1]),
+        xytext=(-3, 5),
+        textcoords="offset points",
+        ha="right",
+        color=PURPLE,
+        fontsize=7.0,
+    )
+    gain.set(ylim=(0, 13.431), xlabel=r"Horizon $T$ (s)", ylabel=r"$g(T)$")
+    gain.set_yticks([0, 5, 10, 12.1])
+    gain.set_yticklabels(["0", "5", "10", "12.1"])
+    gain.set_title("(a)", loc="left", pad=3, fontsize=8.1)
+    dissipation.plot(sw["t"], sw["dissipation"], color=PURPLE, lw=1.05)
+    dissipation.axhline(0, color=INK, ls="--", lw=0.8)
+    lower = float(np.min(sw["dissipation"]))
+    margin = max(1.0, 0.08 * abs(lower))
+    dissipation.set(
+        ylim=(lower - margin, margin), xlabel="Time (s)", ylabel="Left side of (65)"
+    )
+    dissipation.set_yticks([-15, -10, -5, 0])
+    dissipation.set_title("(b)", loc="left", pad=3, fontsize=8.1)
+    save(fig, out / "fig3a_finite_horizon_gain.pdf")
+
+
 def _plots(root, out):
     d = dict(np.load(root / "degree_figure_data.npz", allow_pickle=False))
     realization(d, out)
@@ -160,26 +199,7 @@ def _plots(root, out):
         handlelength=1.4,
     )
     save(fig, out / "fig1c_degree.pdf")
-    sw = dict(np.load(root / "sweep_results.npz", allow_pickle=False))
-    fig, ax = axis(3.43, 1.72, [0.16, 0.22, 0.81, 0.74])
-    good = sw["Iw"] > 0
-    ax.plot(sw["t"][good], sw["gain"][good], color=PURPLE, lw=1.05)
-    gamma = float(json.loads((root / "sweep_summary.json").read_text())["certified_gamma"])
-    ax.axhline(gamma, color=ORANGE, ls="--", lw=1.0)
-    ax.annotate(
-        f"{sw['gain'][-1]:.3f}",
-        (sw["t"][-1], sw["gain"][-1]),
-        xytext=(-4, 6),
-        textcoords="offset points",
-        ha="right",
-        color=PURPLE,
-        fontsize=7.6,
-    )
-    ax.set(xlim=(0, 65), ylim=(0, 13.431), xlabel=r"Horizon $T$ (s)", ylabel=r"$g(T)$")
-    ax.set_xticks([0, 15, 30, 45, 60, 65])
-    ax.set_yticks([0, 5, 10, 12.1])
-    ax.set_yticklabels(["0", "5", "10", "12.1"])
-    save(fig, out / "fig3a_finite_horizon_gain.pdf")
+    sweep_figure(root, out)
 
 
 def run(root=None):
