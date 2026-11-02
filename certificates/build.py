@@ -69,7 +69,7 @@ def write_plot_summary(report):
         rows.append(dict(controller=title, physical_bounds_upper=bounds,
                          velocity_closure_component_strict_lower=None,
                          fixed_containment_test_passed=case["strict_containment"]))
-    rows.append(dict(controller="Koopman-based hybrid MPC [50]", physical_bounds_upper=None,
+    rows.append(dict(controller="Koopman-based hybrid MPC [33]", physical_bounds_upper=None,
                      velocity_closure_component_strict_lower=float(F(report["mpc_closure_lower"]["strict_rational_lower_bound"])),
                      fixed_containment_test_passed=False))
     write_json(ROOT.parent / "comparison/certificate_summary.json",
