@@ -34,3 +34,10 @@ The Galerkin implementation is in `python/`, the controller comparisons
 in `comparison/`, and the certificate checks in `certificates/`.
 [Comparison details](comparison/README.md) include the controller settings
 and training-data regeneration.
+
+The figure legends use author names and year for the MPC reference.
+
+D. Bruder, D. Bombara, and R. J. Wood, “A Koopman-based residual modeling
+approach for the control of a soft robot arm,” *The International Journal of
+Robotics Research*, vol. 44, no. 3, pp. 388–406, 2025.
+DOI: [10.1177/02783649241272114](https://doi.org/10.1177/02783649241272114).

@@ -14,7 +14,7 @@ zero initial states. The scripts write the error table and trajectories to
 
 The controllers are Galerkin degree-3 H-infinity feedback, ordinary Jacobian
 H-infinity feedback, backstepping with all four gains equal to 8 and filter
-frequency 500 rad/s, and Koopman-based hybrid MPC [33]. Both H-infinity
+frequency 500 rad/s, and Koopman-based hybrid MPC of Bruder et al. (2025). Both H-infinity
 controllers use only the tracking error. Backstepping and Koopman-based hybrid
 MPC use all four physical states. MPC receives one second of reference preview.
 
@@ -63,8 +63,8 @@ The containment panel reads `certificate_summary.json`. The certificate
 calculation is provided in `../certificates/`. `design_jacobian.py` uses the
 synthesis routines in `../python/design.py`.
 
-[33] D. Bruder, D. Bombara and R. J. Wood, “A Koopman-based residual modeling
+D. Bruder, D. Bombara and R. J. Wood, “A Koopman-based residual modeling
 approach for the control of a soft robot arm,” *The International Journal of
 Robotics Research*, 44(3), 388–406, 2025.
-[Paper](https://doi.org/10.1177/02783649241272114) ·
+DOI: [10.1177/02783649241272114](https://doi.org/10.1177/02783649241272114) ·
 [Authors' code](https://github.com/free-laboratory/koopman-residual).

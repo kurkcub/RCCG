@@ -1,4 +1,4 @@
-"""Physics predictor and residual fit for the Koopman-based hybrid MPC [33].
+"""Physics predictor and residual fit for the Koopman-based hybrid MPC of Bruder et al. (2025).
 
 The physics predictor is the Galerkin projection of the sampled nominal
 dynamics onto the Hermite dictionary with Gaussian weight; the data model is a

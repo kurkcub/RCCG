@@ -27,7 +27,7 @@ CONFIG = [
     ("galerkin3", r"Galerkin $d=3$ + $\mathcal{H}_\infty$", "#E69A37", "-", "o"),
     ("jacobian", r"Jacobian + $\mathcal{H}_\infty$", "#0072B2", ":", "s"),
     ("backstepping", "Backstepping", "#634592", "-.", "^"),
-    ("hybrid_mpc", "Koopman-based\nhybrid MPC [33]", "#DE5C1E", "--", "D"),
+    ("hybrid_mpc", "Koopman-based hybrid MPC\nBruder et al. (2025)", "#DE5C1E", "--", "D"),
 ]
 STYLE = {key: (label, color, line, marker) for key, label, color, line, marker in CONFIG}
 plt.rcParams.update(
@@ -119,7 +119,7 @@ def aggregate():
     fig.legend(
         handles=handles(True),
         loc="upper center",
-        bbox_to_anchor=(0.53, 0.995),
+        bbox_to_anchor=(0.53, 1.005),
         ncol=2,
         frameon=False,
         fontsize=7.0,
@@ -218,7 +218,7 @@ def temporal():
     fig.legend(
         handles=legend,
         loc="upper center",
-        bbox_to_anchor=(0.53, 0.995),
+        bbox_to_anchor=(0.53, 1.005),
         ncol=2,
         frameon=False,
         fontsize=7.0,
